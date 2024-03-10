@@ -1,6 +1,6 @@
 # Fylarm 
 
-Continuation of [pld-alarm](https://github.com/pldcanfly/pld-alarm]
+Continuation of [pld-alarm](https://github.com/pldcanfly/pld-alarm)
 
 A Clock application that is designed to run on a raspberry PI. And later on integrate with Home-Assistant or some homebrewn protocol.
 

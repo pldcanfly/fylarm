@@ -1,8 +1,5 @@
-prepare: 
-	rm -rf ./build/*
-
-build: prepare
-	go build -o build/fylarm main.go
+build: 
+	go build -o bin/fylarm ./cmd/fylarm/. 
 
 run: 
 	air

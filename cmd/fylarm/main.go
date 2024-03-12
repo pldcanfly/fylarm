@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	"github.com/pldcanfly/fylarm/internal/components"
 )
 
 func clocklayout(clock, date *canvas.Text) *fyne.Container {
@@ -37,6 +38,6 @@ func main() {
 	w.Resize(fyne.NewSize(1920, 1080))
 	// w.SetFullScreen(true)
 	w.SetPadded(false)
-	w.SetContent(clocklayout(initComponents()))
+	w.SetContent(clocklayout(components.InitComponents()))
 	w.ShowAndRun()
 }

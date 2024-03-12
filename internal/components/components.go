@@ -1,4 +1,4 @@
-package main
+package components
 
 import (
 	"image/color"
@@ -8,7 +8,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 )
 
-func initComponents() (*canvas.Text, *canvas.Text) {
+func InitComponents() (*canvas.Text, *canvas.Text) {
 	c := getClock()
 	d := getDate()
 

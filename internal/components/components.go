@@ -8,7 +8,15 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+// I don't like this pattern, doesn't feel very idiomatic
+// Why is it HERE. Why do i need to return arbitrary. Works for now WILL be replaced with
+//
+//	something like a componentstore and interfaces for components that implement an
+//	Init() function and can handle stuff like that on the fly.
+//	GO is good with concurrency and should be able to handle 2 threads seperatly updating
+//	clock and date, but maybe I can merge both into one, which would be the best approach
 func initComponents() (*canvas.Text, *canvas.Text) {
+
 	c := getClock()
 	d := getDate()
 

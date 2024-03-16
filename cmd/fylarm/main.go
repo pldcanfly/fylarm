@@ -5,8 +5,8 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"github.com/pldcanfly/fylarm/internal/alarm"
 	"github.com/pldcanfly/fylarm/internal/components"
-	"github.com/pldcanfly/fylarm/internal/components/alarm"
 )
 
 func main() {

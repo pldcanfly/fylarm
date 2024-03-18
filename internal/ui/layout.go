@@ -1,4 +1,4 @@
-package components
+package ui
 
 import (
 	"image/color"
@@ -21,17 +21,8 @@ func Layout() *fyne.Container {
 				date,
 			),
 			container.NewVBox(
-				widget.NewLabelWithStyle(
-					"",
-					fyne.TextAlignCenter,
-					fyne.TextStyle{},
-				),
-
-				widget.NewLabelWithStyle(
-					"Nächster Alarm: 12:34",
-					fyne.TextAlignCenter,
-					fyne.TextStyle{},
-				),
+				layout.NewSpacer(),
+				NewNext().Widget(),
 				widget.NewLabelWithStyle(
 					"Sonnig 24° Regenwahrscheinlichkeit: 50%",
 					fyne.TextAlignCenter,
@@ -42,6 +33,7 @@ func Layout() *fyne.Container {
 					fyne.TextAlignCenter,
 					fyne.TextStyle{},
 				),
+				layout.NewSpacer(),
 			),
 		),
 	)

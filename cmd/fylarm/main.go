@@ -6,7 +6,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"github.com/pldcanfly/fylarm/internal/alarm"
-	"github.com/pldcanfly/fylarm/internal/components"
+	"github.com/pldcanfly/fylarm/internal/ui"
 )
 
 func main() {
@@ -29,6 +29,6 @@ func main() {
 	w.Resize(fyne.NewSize(800, 480))
 	// w.SetFullScreen(true)
 	w.SetPadded(false)
-	w.SetContent(components.Layout())
-	// w.ShowAndRun()
+	w.SetContent(ui.Layout())
+	w.ShowAndRun()
 }

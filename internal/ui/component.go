@@ -14,6 +14,20 @@ type Component interface {
 	Init() // Init(AlarmService)
 }
 
+type ComponentController struct {
+	Components []*Component
+}
+
+func (cc *ComponentController) Register(c *Component) {
+	cc.Components = append(cc.Components, c)
+}
+
+func (cc *ComponentController) Init() {
+	for _, comp := range cc.Components {
+		(*comp).Init()
+	}
+}
+
 // I don't like this pattern, doesn't feel very idiomatic
 // Why is it HERE. Why do i need to return arbitrary. Works for now WILL be replaced with
 //

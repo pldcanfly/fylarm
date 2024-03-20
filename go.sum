@@ -77,8 +77,6 @@ github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fredbi/uri v1.0.0 h1:s4QwUAZ8fz+mbTsukND+4V5f+mJ/wjaTokwstGUAemg=
 github.com/fredbi/uri v1.0.0/go.mod h1:1xC40RnIOGCaQzswaOvrzvG/3M3F0hyDVb3aO/1iGy0=
-github.com/frolovo22/tag v0.0.2 h1:gFv5P5nqE7purEipbKT7X/OjP286nx5gA30mjt/4SgA=
-github.com/frolovo22/tag v0.0.2/go.mod h1:Bt1H06v6RQFTrplGixhtUXVzHA/RpmhGEVxC7wqWGIw=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/fsnotify/fsnotify v1.6.0 h1:n+5WquG0fcWoWp6xPWfHdbskMCQaFnG6PfBrh1Ky4HY=
 github.com/fsnotify/fsnotify v1.6.0/go.mod h1:sl3t1tCWJFWoRz9R8WJCbQihKKwmorjAbSClcnxKAGw=

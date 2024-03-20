@@ -1,4 +1,4 @@
-package alarm
+package services
 
 import (
 	"fmt"
@@ -12,24 +12,26 @@ const (
 	StateWaiting
 )
 
-type Alarm struct {
+type AlarmTime struct {
 	NextRing time.Time
 	Ring     time.Time
 }
 
 type AlarmService struct {
-	Alarms []*Alarm
+	Alarms []*AlarmTime
 }
+
+var Alarm = NewAlarmService()
 
 func NewAlarmService() *AlarmService {
 	return &AlarmService{
-		Alarms: make([]*Alarm, 5),
+		Alarms: make([]*AlarmTime, 5),
 	}
 
 }
 
-func (as *AlarmService) NewAlarm(ringtime time.Time) *Alarm {
-	a := &Alarm{}
+func (as *AlarmService) NewAlarm(ringtime time.Time) *AlarmTime {
+	a := &AlarmTime{}
 	as.Alarms = append(as.Alarms, a)
 	now := time.Now()
 
@@ -44,13 +46,14 @@ func (as *AlarmService) NewAlarm(ringtime time.Time) *Alarm {
 	return a
 }
 
-func (as *AlarmService) NextAlarm() (*Alarm, error) {
+func (as *AlarmService) NextAlarm() (*AlarmTime, error) {
 	now := time.Now()
-	var next *Alarm
+	var next *AlarmTime
 	var least time.Duration
 
 	for _, a := range as.Alarms {
 		if a == nil {
+			fmt.Println("skip")
 			continue
 		}
 

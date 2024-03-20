@@ -1,16 +1,17 @@
-package ui
+package components
 
 import (
 	"image/color"
 	"time"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 )
 
 func getClock() *canvas.Text {
 	clock := canvas.NewText("", color.White)
 	clock.TextSize = 50
-	clock.Alignment = LabelAlign
+	clock.Alignment = fyne.TextAlignCenter
 
 	return clock
 }
@@ -18,7 +19,7 @@ func getClock() *canvas.Text {
 func getDate() *canvas.Text {
 	date := canvas.NewText("", color.White)
 	date.TextSize = 20
-	date.Alignment = LabelAlign
+	date.Alignment = fyne.TextAlignCenter
 	return date
 }
 

@@ -16,13 +16,10 @@ func main() {
 	w.Resize(fyne.NewSize(800, 480))
 	// w.SetFullScreen(true)
 	w.SetPadded(false)
-	l := services.Layout()
-	// go func() {
-	// 	for {
-	// 		l.Add(widget.NewLabel("Test"))
-	// 		time.Sleep(1 * time.Second)
-	// 	}
-	// }()
+	l, err := services.Layout()
+	if err != nil {
+		panic(err)
+	}
 	w.SetContent(l)
 
 	w.ShowAndRun()

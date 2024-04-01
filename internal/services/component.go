@@ -1,74 +1,48 @@
 package services
 
 import (
-	"log"
+	"fmt"
+	"image/color"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/widget"
 	"github.com/pldcanfly/fylarm/internal/components"
 )
 
-type Component interface {
-	Widget() *fyne.Widget
-	Init() // Init(AlarmService)
-}
+func Layout() (*fyne.Container, error) {
 
-type ComponentService struct {
-	Components    []*Component
-	TopComponents []*Component
-}
-
-func NewComponentService() *ComponentService {
-	return &ComponentService{}
-}
-
-func (cc *ComponentService) Register(c *Component) {
-	cc.Components = append(cc.Components, c)
-}
-
-func (cc *ComponentService) Init() {
-	for _, comp := range cc.Components {
-		(*comp).Init()
-	}
-}
-
-func Layout() *fyne.Container {
-
-	c := container.NewVBox()
 	next, err := Alarm.NextAlarm()
 	if err != nil {
-		log.Printf("layout next %v:", err)
-	} else {
-
-		c.Add(components.NewNext(next.NextRing))
+		return nil, fmt.Errorf("layout next %v:", err)
 	}
-	return c
-	// clock, date := initComponents()
-	// return container.NewStack(
-	// 	canvas.NewRectangle(color.Black),
-	// 	container.NewGridWithRows(2,
-	// 		container.NewVBox(
-	// 			layout.NewSpacer(),
-	// 			clock,
-	// 			date,
-	// 		),
-	// 		container.NewVBox(
-	// 			layout.NewSpacer(),
-	// 			NewNext().Widget(),
-	// 			widget.NewLabelWithStyle(
-	// 				"Sonnig 24° Regenwahrscheinlichkeit: 50%",
-	// 				fyne.TextAlignCenter,
-	// 				fyne.TextStyle{},
-	// 			),
-	// 			widget.NewLabelWithStyle(
-	// 				"Heute in Graz",
-	// 				fyne.TextAlignCenter,
-	// 				fyne.TextStyle{},
-	// 			),
-	// 			layout.NewSpacer(),
-	// 		),
-	// 	),
-	// )
+	clock, date := components.GetClock()
+
+	c := container.NewStack(
+		canvas.NewRectangle(color.Black),
+		container.NewGridWithRows(2,
+			container.NewVBox(
+				layout.NewSpacer(),
+				clock,
+				date,
+			),
+			container.NewVBox(
+				layout.NewSpacer(),
+				components.NewNext(next.NextRing),
+				components.GetWeather(),
+				widget.NewLabelWithStyle(
+					"Heute in Graz",
+					fyne.TextAlignCenter,
+					fyne.TextStyle{},
+				),
+				layout.NewSpacer(),
+			),
+		),
+	)
+
+	return c, nil
 }
 
 // I don't like this pattern, doesn't feel very idiomatic

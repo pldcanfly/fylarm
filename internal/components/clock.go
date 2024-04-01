@@ -8,11 +8,22 @@ import (
 	"fyne.io/fyne/v2/canvas"
 )
 
+func GetClock() (*canvas.Text, *canvas.Text) {
+	c := getClock()
+	d := getDate()
+	go func() {
+		for range time.Tick(time.Second) {
+			updateTime(c, d)
+		}
+
+	}()
+	return c, d
+}
+
 func getClock() *canvas.Text {
 	clock := canvas.NewText("", color.White)
 	clock.TextSize = 50
 	clock.Alignment = fyne.TextAlignCenter
-
 	return clock
 }
 

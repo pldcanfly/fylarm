@@ -1,9 +1,11 @@
 package media
 
 import (
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/hajimehoshi/go-mp3"
 )
@@ -12,6 +14,23 @@ type ORFStream struct {
 	name    string
 	metaurl string
 	stream  io.Reader
+	meta    *ORFMetaResponse
+}
+
+type ORFMetaResponse struct {
+	Payload struct {
+		Show      string `json:"title"`
+		Moderator string `json:"moderator"`
+		Item      struct {
+			Artist string `json:"interpreter"`
+			Song   string `json:"title"`
+			Images []struct {
+				Versions []struct {
+					Albumart string `json:"path"`
+				}
+			} `json:"images"`
+		} `json:"item"`
+	} `json:"payload"`
 }
 
 // https://audioapi.orf.at/oe3/api/json/5.0/broadcast/onair?items=true&_o=sound.orf.at
@@ -29,7 +48,8 @@ func NewOE3Stream() *ORFStream {
 		log.Printf("reading playlist: %v", err)
 	}
 
-	resp, err := http.Get(string(bytes))
+	resp, err := http.Get(strings.TrimSuffix(string(bytes), "\r\n"))
+
 	if err != nil {
 		log.Fatalf("opening stream: %v", err)
 	}
@@ -52,30 +72,52 @@ func (s *ORFStream) Stream() io.Reader {
 	return s.stream
 }
 
+func (s *ORFStream) Refresh() error {
+	url := "https://audioapi.orf.at/oe3/api/json/5.0/broadcast/onair?items=true&_o=sound.orf.at"
+
+	res, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	r, err := io.ReadAll(res.Body)
+
+	var data *ORFMetaResponse
+	err = json.Unmarshal(r, &data)
+	if err != nil {
+		return err
+	}
+
+	s.meta = data
+
+	return nil
+}
+
 func (s *ORFStream) Bitrate() int {
 	return 48000
 }
 
 func (s *ORFStream) Artist() string {
-	return "NYI-Artist"
+	return s.meta.Payload.Item.Artist
 }
 
 func (s *ORFStream) Song() string {
-	return "NYI-Song"
+	return s.meta.Payload.Item.Song
 }
 
 func (s *ORFStream) Show() string {
-	return "NYI-Show"
+	return s.meta.Payload.Show
 }
 
-func (s *ORFStream) Presenter() string {
-	return "NYI-Kratky"
+func (s *ORFStream) Moderator() string {
+	return s.meta.Payload.Moderator
 }
 
 func (s *ORFStream) Station() string {
-	return "NYI-Sender"
+	return "Hitradio Ö3"
 }
 
 func (s *ORFStream) Albumart() string {
-	return "NYI-Album"
+	return s.meta.Payload.Item.Images[0].Versions[0].Albumart
 }

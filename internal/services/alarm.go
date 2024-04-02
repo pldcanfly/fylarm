@@ -53,7 +53,6 @@ func (as *AlarmService) NextAlarm() (*AlarmTime, error) {
 
 	for _, a := range as.Alarms {
 		if a == nil {
-			fmt.Println("skip")
 			continue
 		}
 

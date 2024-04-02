@@ -42,20 +42,18 @@ func GetWeather() *widget.Label {
 	data, err := fetchWeather()
 	if err != nil {
 		log.Println("get weather:", err)
+		return nil
 	}
 
-	if err != nil {
-		log.Println("parsing error:", err)
-	}
-
-	// Get 8:00 14:00 20:00
-	fmt.Println(data.Current.Temp)
 	ws := fmt.Sprintf("Aktuell: %3.0f °C\n", data.Current.Temp)
 	now := time.Now()
 
 	cnt := 0
 	for i, v := range data.Hourly.Time {
-		time, _ := time.Parse("2006-01-02T15:04", v)
+		time, err := time.Parse("2006-01-02T15:04", v)
+		if err != nil {
+			log.Println("parsing error:", err)
+		}
 		h := time.Hour()
 
 		if h == 8 || h == 14 || h == 20 {

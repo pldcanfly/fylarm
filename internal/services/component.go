@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"github.com/pldcanfly/fylarm/internal/components"
+	"github.com/pldcanfly/fylarm/internal/media"
 )
 
 func Layout() (*fyne.Container, error) {
@@ -20,11 +21,28 @@ func Layout() (*fyne.Container, error) {
 	}
 	clock, date := components.GetClock()
 
+	test := media.NewOE3Stream()
+	test.Refresh()
+	album, err := fyne.LoadResourceFromURLString(test.Albumart())
+	if err != nil {
+		return nil, fmt.Errorf("loading albumart: %v", err)
+	}
+	fmt.Println(album.Name())
+
+	ac := canvas.NewImageFromResource(album)
+	ac.SetMinSize(fyne.NewSize(200, 200))
+
 	c := container.NewStack(
 		canvas.NewRectangle(color.Black),
 		container.NewGridWithRows(2,
 			container.NewVBox(
 				layout.NewSpacer(),
+				widget.NewLabelWithStyle(test.Station(), fyne.TextAlignCenter, fyne.TextStyle{}),
+				container.NewCenter(
+					ac,
+				),
+				widget.NewLabelWithStyle(test.Show(), fyne.TextAlignCenter, fyne.TextStyle{}),
+				widget.NewLabelWithStyle(fmt.Sprintf("%s - %s", test.Artist(), test.Song()), fyne.TextAlignCenter, fyne.TextStyle{}),
 				clock,
 				date,
 			),

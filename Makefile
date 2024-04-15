@@ -1,29 +1,11 @@
-IS_NIXOS := $(shell if [ -d "/etc/NIXOS" ]; then echo true; else echo false; fi)
+HAS_NIX_SHELL := $(shell command -v nix-shell 2> /dev/null)
 
-NIX_DEPS := libGL pkg-config xorg.libX11.dev xorg.libXcursor xorg.libXi xorg.libXinerama xorg.libXrandr xorg.libXxf86vm alsa-lib
-
-NIX_SHELL_CMD := nix-shell -p $(NIX_DEPS) --command
+ifeq ($(strip $(HAS_NIX_SHELL)),)
+    $(error "nix-shell is not installed. Please install Nix or ensure it's in your PATH.")
+endif
 
 build:
-ifeq ($(IS_NIXOS),true)
-	@echo "Running with Nix..."
-	$(NIX_SHELL_CMD) "make _build"
-else
-	@echo "Running without Nix..."
-	make _build
-endif
-
-_build:
-	go build -o bin/fylarm ./cmd/fylarm/.
+	nix-shell --command "go build -o bin/fylarm ./cmd/fylarm/."
 
 run:
-ifeq ($(IS_NIXOS),true)
-	@echo "Running with Nix..."
-	$(NIX_SHELL_CMD) "make _run"
-else
-	@echo "Running without Nix..."
-	make _run
-endif
-
-run:
-	air
+	nix-shell --command air

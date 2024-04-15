@@ -29,16 +29,20 @@ func GetMedia(m media.MediaStream, rdy chan bool) *fyne.Container {
 func updateText(m media.MediaStream, station *widget.Label, song *widget.Label, cover *fyne.Container, rdy chan bool) {
 	for {
 		<-rdy
-		if m.Albumart() != "" {
-			art, err := fyne.LoadResourceFromURLString(m.Albumart())
+		cover.RemoveAll()
+		album, err := m.Albumart()
+		if err != nil {
+			log.Println(err)
+		} else {
+
+			art, err := fyne.LoadResourceFromURLString(album)
 			if err != nil {
 				log.Fatal("loading album art")
-				return
+			} else {
+				ac := canvas.NewImageFromResource(art)
+				ac.SetMinSize(fyne.NewSize(200, 200))
+				cover.Add(ac)
 			}
-			ac := canvas.NewImageFromResource(art)
-			ac.SetMinSize(fyne.NewSize(200, 200))
-			cover.RemoveAll()
-			cover.Add(ac)
 		}
 
 		station.SetText(fmt.Sprintf("%s: %s", m.Station(), m.Show()))

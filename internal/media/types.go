@@ -9,7 +9,7 @@ type MediaStream interface {
 	Show() string
 	Moderator() string
 	Station() string
-	Albumart() string
+	Albumart() (string, error)
 }
 
 const (

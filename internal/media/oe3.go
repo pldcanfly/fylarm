@@ -132,9 +132,9 @@ func (s *OE3Stream) Station() string {
 	return "Hitradio Ö3"
 }
 
-func (s *OE3Stream) Albumart() string {
+func (s *OE3Stream) Albumart() (string, error) {
 	if len(s.meta.Payload.Item.Images) >= 1 && len(s.meta.Payload.Item.Images[0].Versions) >= 1 {
-		return s.meta.Payload.Item.Images[0].Versions[0].Albumart
+		return s.meta.Payload.Item.Images[0].Versions[0].Albumart, nil
 	}
-	return ""
+	return "", fmt.Errorf("albumart not fetchable")
 }
